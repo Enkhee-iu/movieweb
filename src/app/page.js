@@ -5,6 +5,8 @@ import { PopularMovieList } from "./_features/home/PopularMovieList";
 import { TopRatedMovieList } from "./_features/home/TopRatedMovieList";
 import { UpcomingMovieList } from "./_features/home/UpcomingMovieList";
 
+
+
 export default function Home() {
   return (
     <div>

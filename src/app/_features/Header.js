@@ -1,3 +1,5 @@
+
+
 export const Header = () => {
   return (
     <div className="w-[1440px] min-h-[59px] bg-[#ffffff] pr-16 pl-16 ">
@@ -34,9 +36,103 @@ export const Header = () => {
           </div>
         </div>
 
-        <div className="flex gap-[12px] w-[488px] min-h-[36px]">
-          <div className="w-[97px] min-h-[36px] border flex gap-[8px] rounded-sm "></div>
+        <div className="flex gap-[12px] w-[488px] min-h-[36px] gap-4">
+          <div className="w-[97px] min-h-[36px] border flex gap-[8px] rounded-md border-[#e4e4e7] py-1 pr-4 pl-4">
+           <button className="flex gap-2 items-center">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={10}
+    height={5}
+    fill="none"
+  >
+    <path
+      stroke="#18181B"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m1 .5 4 4 4-4"
+    />
+  </svg>
+  Genre
+</button>
+</div>
+
+      <div className="flex items-center border rounded-md border-[#e4e4e7] w-[379px] min-h-[36px] px-2">
+      
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={16}
+        height={17}
+        fill="none"
+        className="mr-2"
+      >
+        <path
+          fill="#09090B"
+          stroke="#09090B"
+          d="M6.934 3.133a4.3 4.3 0 0 1 3.36 6.984l-.28.35 3.343 3.343c.007.007.01.015.01.024l-.01.023a.033.033 0 0 1-.046 0l-3.344-3.344-.35.28a4.3 4.3 0 1 1-2.684-7.66Zm0 .067a4.234 4.234 0 1 0 0 8.467 4.234 4.234 0 0 0 0-8.467Z"
+          opacity={0.5}
+        />
+      </svg>
+
+      
+      <input
+        type="text"
+        placeholder="Search"
+        className="flex-1 outline-none"
+      />
         </div>
+        </div>
+         <div >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={40}
+        height={41}
+        fill="none"
+       
+      >
+        <g filter="url(#a)">
+          <path
+            fill="#fff"
+            d="M2 11.5c0-5.523 4.477-10 10-10h16c5.523 0 10 4.477 10 10v16c0 5.523-4.477 10-10 10H12c-5.523 0-10-4.477-10-10v-16Z"
+            shapeRendering="crispEdges"
+          />
+          <path
+            stroke="#E4E4E7"
+            d="M12 2h16a9.5 9.5 0 0 1 9.5 9.5v16A9.5 9.5 0 0 1 28 37H12a9.5 9.5 0 0 1-9.5-9.5v-16A9.5 9.5 0 0 1 12 2Z"
+            shapeRendering="crispEdges"
+          />
+          <path
+            stroke="#18181B"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M20 13.5a4.243 4.243 0 0 0 6 6 6 6 0 1 1-6-6Z"
+          />
+        </g>
+        <defs>
+          <filter
+            id="a"
+            width={40}
+            height={40}
+            x={0}
+            y={0.5}
+            colorInterpolationFilters="sRGB"
+            filterUnits="userSpaceOnUse"
+          >
+            <feFlood floodOpacity={0} result="BackgroundImageFix" />
+            <feColorMatrix
+              in="SourceAlpha"
+              result="hardAlpha"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            />
+            <feOffset dy={1} />
+            <feGaussianBlur stdDeviation={1} />
+            <feComposite in2="hardAlpha" operator="out" />
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+        </defs>
+      </svg>
+    </div>
       </div>
     </div>
   );
