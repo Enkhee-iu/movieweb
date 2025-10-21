@@ -12,7 +12,7 @@ import {
 
 export function HeroSection() {
   return (
-    <Carousel className="pl-120 pr-120 min-h-[600px]">
+    <Carousel className="pl-16 pr-16 min-h-[600px]">
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index}>
@@ -31,3 +31,5 @@ export function HeroSection() {
     </Carousel>
   );
 }
+
+
