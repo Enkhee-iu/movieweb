@@ -6,8 +6,8 @@ import Searchicon from "../_icons/Searchicon";
 
 export const Header = () => {
   return (
-    <div className="w-<fraction> min-h-[59px] bg-[#ffffff] pl-16 pr-16 ">
-      <div className="w-<fraction> min-h-[36px] p-[16px] flex justify-between">
+    <div className="w-<fraction> min-h-[59px] bg-[#ffffff] pl-16 pr-16 flex justify-center">
+      <div className="w-[1440px] min-h-[36px] p-[16px] flex justify-between">
         <div className="flex gap-[8px] items-center">
           <div className="w-[18px] h-[19px]">
             <Filmicon />
@@ -42,5 +42,3 @@ export const Header = () => {
     </div>
   );
 };
-
-
