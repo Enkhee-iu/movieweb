@@ -6,11 +6,13 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY"; // өөрийн token-г энд тавина
 
-export const TopRatedMovieList = () => {
+export function TopRatedMovieList() {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPopularMovies = async () => {
+      setLoading(true);
       try {
         const res = await fetch(
           `${BASE_URL}/movie/top_rated?language=en-US&page=1`,
@@ -23,20 +25,38 @@ export const TopRatedMovieList = () => {
         );
         const data = await res.json();
         setMovies(data.results || []);
+
+        // ⏳ Loading үргэлжлэх хугацааг тохируулна (жишээ нь 2 секунд)
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000); // 2000ms = 2 секунд
       } catch (error) {
         console.error("Error fetching movies:", error);
+        setLoading(false);
       }
     };
 
     fetchPopularMovies();
   }, []);
 
+  // 🩶 Skeleton component (шинээр нэмсэн)
+
+  const SkeletonCard = () => (
+    <div className="w-[280px] bg-white rounded-2xl shadow-md overflow-hidden">
+      <div className="bg-gray-300 h-[340px] w-full animate-pulse"></div>
+      <div className="p-3 bg-[#F4F4F5] h-[100px]">
+        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2 animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-<fraction> h-<fraction> flex justify-center">
       <div className="p-6">
         <div className="flex justify-between">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">Upcoming</h2>
-          <h3 className="text-sm font-normal oklch(14.7% 0.004 49.25) flex items-center gap-[11px]">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Top Rated</h2>
+          <h3 className="text-sm font-normal oklch(14.7% 0.004 49.25) flex items-center gap-[11px] cursor-pointer  p-2  ">
             See more
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,17 +73,19 @@ export const TopRatedMovieList = () => {
             </svg>
           </h3>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center">
-          {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              title={movie.title}
-              rating={movie.vote_average.toFixed(1)}
-              image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            />
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          {loading
+            ? Array.from({ length: 20 }).map((_, i) => <SkeletonCard key={i} />)
+            : movies.map((movie) => (
+                <MovieCard
+                  key={movie.id}
+                  title={movie.title}
+                  rating={movie.vote_average?.toFixed(1)}
+                  image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                />
+              ))}
         </div>
       </div>
     </div>
   );
-};
+}

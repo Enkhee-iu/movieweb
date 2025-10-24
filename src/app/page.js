@@ -4,18 +4,15 @@ import React from "react";
 import { Footer } from "./_features/Footer";
 import { Header } from "./_features/Header";
 import { HeroSection } from "./_features/home/HeroSection";
-import { PopularMovieList } from "./_features/home/PopularMovieList";
-import { TopRatedMovieList } from "./_features/home/TopRatedMovieList";
-import { UpcomingMovieList } from "./_features/home/UpcomingMovieList";
+import { MovieList } from "./_features/home/MovieList";
 
 export default function Home() {
   return (
     <div>
       <Header />
       <HeroSection />
-      <UpcomingMovieList />
-      <PopularMovieList />
-      <TopRatedMovieList />
+      <MovieList type="Upcoming Movielist" />
+
       <Footer />
     </div>
   );
