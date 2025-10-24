@@ -1,12 +1,14 @@
 "use client";
 import { MovieCard } from "@/app/_components/MovieListCard";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
 export function UpcomingMovieList() {
+  const router = useRouter();
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +30,7 @@ export function UpcomingMovieList() {
 
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1000);
       } catch (error) {
         console.error("Error fetching movies:", error);
         setLoading(false);
@@ -37,6 +39,10 @@ export function UpcomingMovieList() {
 
     fetchPopularMovies();
   }, []);
+
+  const handleSeeMore = () => {
+    router.push("/movies/upcoming");
+  };
 
   const SkeletonCard = () => (
     <div className="w-[280px] bg-white rounded-2xl shadow-md overflow-hidden">
@@ -51,9 +57,14 @@ export function UpcomingMovieList() {
   return (
     <div className="w-<fraction> h-<fraction> flex justify-center">
       <div className="p-6">
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">Upcoming</h2>
-          <h3 className="text-sm font-normal oklch(14.7% 0.004 49.25) flex items-center gap-[11px] cursor-pointer  p-2  ">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">
+            🎬 Upcoming Movies
+          </h2>
+          <button
+            onClick={handleSeeMore}
+            className="text-sm text-gray-600 flex items-center gap-2 cursor-pointer hover:text-black transition"
+          >
             See more
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +79,7 @@ export function UpcomingMovieList() {
                 d="M.5 5.167h9.333m0 0L5.167.5m4.666 4.667L5.167 9.833"
               />
             </svg>
-          </h3>
+          </button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {loading
