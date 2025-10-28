@@ -1,6 +1,9 @@
+"use client";
 import * as React from "react";
-
+import VideoModal from "./Videomodal";
 export const Card1 = ({ title, rating }) => {
+  const [open, setOpen] = React.useState(false);
+  const trailerUrl = "https://www.youtube.com/embed/PvvUbP7fW44";
   return (
     <div className="relative">
       <div
@@ -11,13 +14,11 @@ export const Card1 = ({ title, rating }) => {
           <div>
             <h3 className="text-base font-normal">Now Playing:</h3>
             <h1 className="font-bold text-4xl">Wicked</h1>
-
             <p className="text-sm mt-1 flex items-center gap-1">
               <span className="text-yellow-400">⭐</span>
               {typeof rating === "number" ? rating.toFixed(1) : "N/A"}/10
             </p>
           </div>
-
           <div>
             <p className="mt-4">
               Elphaba, a misunderstood young woman because of her green skin,
@@ -25,8 +26,11 @@ export const Card1 = ({ title, rating }) => {
               the Land of Oz. After an encounter with the Wonderful Wizard of
               Oz, their friendship reaches a crossroads.
             </p>
-
-            <button className="flex justify-center cursor-pointer items-center gap-2 w-[145px] mt-4 h-10 text-black bg-[#f4f4f5] rounded-md">
+            <button
+              onClick={() => setOpen(true)}
+              className="flex justify-center cursor-pointer items-center gap-2 w-[145px] mt-4 h-10 text-black bg-[#f4f4f5] 
+               rounded-md"
+            >
               <svg
                 width={11}
                 height={13}
@@ -46,6 +50,12 @@ export const Card1 = ({ title, rating }) => {
           </div>
         </div>
       </div>
+
+      <VideoModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        trailerUrl="https://www.youtube.com/embed/fVImkUelYbI"
+      />
     </div>
   );
 };
