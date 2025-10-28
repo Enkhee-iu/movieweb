@@ -7,7 +7,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
-export function UpcomingMovieList() {
+export function MovieDetail() {
   const router = useRouter();
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,11 +55,26 @@ export function UpcomingMovieList() {
   );
 
   return (
+    <div>
+        <div className="flex justify-center">
+        <div className="w-[1470px] h-[524px] flex justify-center">
+            <div className="w-[1470px] h-[72px] flex justify-between">
+                <div>
+                <h1 className="font-bold text-4xl">Wicked</h1>
+                <p className="font-normal text-lg">2024.11.26 PG 2h 40m</p>
+                </div>
+                <div>
+                    <p>Rating</p>
+                    ⭐ 6.9/10
+                </div>
+            </div>
+        </div>
+        </div>
     <div className="w-<fraction> h-<fraction> flex justify-center">
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
-            🎬 Upcoming Movies
+            More like this
           </h2>
           <button
             onClick={handleSeeMore}
@@ -81,20 +96,22 @@ export function UpcomingMovieList() {
             </svg>
           </button>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {loading
-            ? Array.from({ length: 20 }).map((_, i) => <SkeletonCard key={i} />)
-            : movies.map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                   id={movie.id} 
-                  title={movie.title}
-                  rating={movie.vote_average?.toFixed(1)}
-                  image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                />
-              ))}
-        </div>
+       <div className="grid grid-cols-5 gap-6">
+  {loading
+    ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
+    : movies.slice(0, 5).map((movie) => (
+        <MovieCard
+          key={movie.id}
+          id={movie.id}
+          title={movie.title}
+          rating={movie.vote_average?.toFixed(1)}
+          image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        />
+      ))}
+</div>
+
       </div>
+    </div>
     </div>
   );
 }
