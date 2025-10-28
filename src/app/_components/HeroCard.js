@@ -1,13 +1,10 @@
 import * as React from "react";
+import { Card1 } from "./Card1";
 
 export const HeroCard = () => {
   return (
     <div>
-      <div
-        style={{ backgroundImage: "url(/HeroCard.jpg)" }}
-        className="bg-cover bg-center w-full h-155"
-      ></div>
-      <div className=""></div>
+      <Card1 />
     </div>
   );
 };

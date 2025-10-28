@@ -34,7 +34,7 @@ export function MovieListData({ title, type }) {
         setMovies([]);
         setTotalPages(1);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 1000);
       }
     };
 

@@ -1,31 +1,28 @@
 import Filmicon from "../_icons/Filmicon";
 import Filmtitle from "../_icons/Filmtitle";
-import Genreicon from "../_icons/Genreicon";
+
 import Moonicon from "../_icons/Moonicon";
 import Searchicon from "../_icons/Searchicon";
+import { Genre } from "../_components/Genre";
 
 export const Header = () => {
   return (
-    // <div className="w-<fraction> min-h-[59px] bg-[#ffffff] pl-16 pr-16 flex justify-center">
-    <div className="w-<fraction>  min-h-[36px] p-[16px] flex justify-between mb-[24px] pl-[80px] pr-[80px]">
-      <div className="flex gap-[8px] items-center">
+    <div className="w-<fraction>  min-h-9 p-4 flex justify-between mb-6 pl-20 pr-20">
+      <div className="flex gap-2 items-center">
         <div className="w-[18px] h-[19px]">
           <Filmicon />
         </div>
-        <div className="w-[64px] h-[20px] flex items-center">
+        <div className="w-16 h-5 flex items-center">
           <Filmtitle />
         </div>
       </div>
 
-      <div className="flex  w-[488px] min-h-[36px] gap-4">
-        <div className="w-[97px] min-h-[36px] border flex gap-[8px] rounded-md border-[#e4e4e7] py-1 pr-4 pl-4 ">
-          <button className="flex gap-2 items-center">
-            <Genreicon />
-            Genre
-          </button>
+      <div className="flex  w-[488px] min-h-9 gap-4">
+        <div className="w-[97px]  border flex gap-8 rounded-md border-[#e4e4e7] py-1 pr-4 pl-4 ">
+          <Genre />
         </div>
 
-        <div className="flex items-center border rounded-md border-[#e4e4e7] w-[379px] min-h-[36px] gap-[8px] px-2 ">
+        <div className="flex items-center border rounded-md border-[#e4e4e7] w-[379px] min-h-9 gap-2 px-2 ">
           <Searchicon />
 
           <input
@@ -35,10 +32,9 @@ export const Header = () => {
           />
         </div>
       </div>
-      <div className="border w-[36px] min-h-[36px] flex items-center rounded-md justify-center">
+      <div className="border w-9 min-h-9 flex items-center rounded-md justify-center">
         <Moonicon />
       </div>
     </div>
-    // </div>
   );
 };
