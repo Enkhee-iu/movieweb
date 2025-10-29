@@ -8,7 +8,7 @@ export const Card1 = ({ title, rating }) => {
     <div className="relative">
       <div
         style={{ backgroundImage: "url(/HeroCard.jpg)" }}
-        className="relative bg-cover bg-center w-full h-[750px]"
+        className="relative bg-cover bg-center w-full h-[600px]"
       >
         <div className="absolute left-[159px] top-[178px] w-[404px] h-[264px] gap-4 font-inter text-white">
           <div>
