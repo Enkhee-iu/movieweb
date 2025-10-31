@@ -6,6 +6,43 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
+function MovieSkeleton() {
+  return (
+    <div className="animate-pulse max-w-7xl mx-auto p-8 text-gray-300">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <div className="h-8 w-48 bg-gray-200 rounded mb-2"></div>
+          <div className="h-4 w-32 bg-gray-200 rounded"></div>
+        </div>
+        <div className="h-6 w-16 bg-gray-200 rounded"></div>
+      </div>
+
+      <div className="flex gap-8 mb-10">
+        <div className="w-[290px] h-[428px] bg-gray-200 rounded-xl"></div>
+        <div className="w-[760px] h-[428px] bg-gray-200 rounded-xl"></div>
+      </div>
+
+      <div className="h-20 bg-gray-200 rounded mb-8"></div>
+
+      <div className="space-y-3 mb-10">
+        <div className="h-4 w-64 bg-gray-200 rounded"></div>
+        <div className="h-4 w-80 bg-gray-200 rounded"></div>
+        <div className="h-4 w-72 bg-gray-200 rounded"></div>
+      </div>
+
+      <div className="grid grid-cols-5 gap-6">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i}>
+            <div className="w-full h-[270px] bg-gray-200 rounded-xl mb-2"></div>
+            <div className="h-4 w-32 bg-gray-200 rounded mb-1"></div>
+            <div className="h-3 w-16 bg-gray-200 rounded"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function MovieDetail() {
   const router = useRouter();
   const { id } = useParams();
@@ -13,6 +50,7 @@ export default function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [similar, setSimilar] = useState([]);
   const [trailerKey, setTrailerKey] = useState(null);
+  const [credits, setCredits] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -51,9 +89,11 @@ export default function MovieDetail() {
             },
           }
         );
+        const similarData = await similarRes.json();
+        setSimilar(similarData.results || []);
 
-        const ActorDetail = await fetch(
-          `${BASE_URL} /movie/${id}/credits?language=en-US`,
+        const creditRes = await fetch(
+          `${BASE_URL}/movie/${id}/credits?language=en-US`,
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -61,9 +101,8 @@ export default function MovieDetail() {
             },
           }
         );
-
-        const similarData = await similarRes.json();
-        setSimilar(similarData.results || []);
+        const creditData = await creditRes.json();
+        setCredits(creditData);
 
         setLoading(false);
       } catch (error) {
@@ -75,8 +114,8 @@ export default function MovieDetail() {
     if (id) fetchMovieData();
   }, [id]);
 
-  if (loading)
-    return <p className="text-center text-gray-600 mt-10">Loading...</p>;
+  if (loading) return <MovieSkeleton />;
+
   if (!movie)
     return <p className="text-center text-red-500 mt-10">Movie not found</p>;
 
@@ -98,13 +137,13 @@ export default function MovieDetail() {
           </div>
         </div>
 
-        <div className=" w-[1100px] w-[428px] flex gap-8 mb-10">
+        <div className="flex gap-8 mb-10">
           <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
             className="rounded-xl shadow-lg w-[290px] h-[428px]"
           />
-          <div className=" w-[760px] h-[428px]  bg-gray-200 rounded-xl flex ">
+          <div className="w-[760px] h-[428px] bg-gray-200 rounded-xl flex">
             {trailerKey ? (
               <iframe
                 src={`https://www.youtube.com/embed/${trailerKey}`}
@@ -113,31 +152,64 @@ export default function MovieDetail() {
                 className="w-full h-full rounded-xl"
               ></iframe>
             ) : (
-              <p className="text-gray-500">No trailer available</p>
+              <p className="text-gray-500 m-auto">No trailer available</p>
             )}
           </div>
         </div>
-        <div className="flex gap-10 font-semibold mb-10">
-          <p className="w-[77px] h-5 rounded-full justify-center items-center ">
-            Fairy Tale
-          </p>
-          <p>Pop Musical</p>
-          <p>Fantasy</p>
-          <p>Musical</p>
-          <p>Romace</p>
-        </div>
+
         <p className="text-gray-700 mb-8">{movie.overview}</p>
 
-        <div className=" gap-4 mb-10">
-          <p>{movie.ActorDetail}</p>
-        </div>
+        {credits && (
+          <div className="space-y-3 mb-10 text-gray-800">
+            <div className="flex gap-2">
+              <p className="font-semibold w-[100px]">Director</p>
+              <p>
+                {credits.crew
+                  .filter((m) => m.job === "Director")
+                  .map((d) => d.name)
+                  .join(", ") || "N/A"}
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <p className="font-semibold w-[100px]">Writers</p>
+              <p>
+                {credits.crew
+                  .filter(
+                    (m) =>
+                      m.job === "Writer" ||
+                      m.job === "Screenplay" ||
+                      m.job === "Story" ||
+                      m.department === "Writing"
+                  )
+                  .slice(0, 3)
+                  .map((w) => w.name)
+                  .join(", ") || "N/A"}
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <p className="font-semibold w-[100px]">Stars</p>
+              <p>
+                {credits.cast
+                  .slice(0, 3)
+                  .map((actor) => actor.name)
+                  .join(" • ") || "N/A"}
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-bold text-gray-800">More like this</h3>
-          <button className="text-gray-500 text-sm hover:text-gray-800 flex items-center gap-1">
+          <button
+            onClick={() => router.push(`/movie/${id}/similar`)}
+            className="text-gray-500 text-sm hover:text-gray-800 flex items-center gap-1"
+          >
             See more →
           </button>
         </div>
+
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           {similar.slice(0, 5).map((m) => (
             <div
