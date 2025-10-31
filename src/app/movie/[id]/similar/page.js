@@ -8,7 +8,6 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
-// 🦴 Skeleton Loader Component
 function SimilarMoviesSkeleton() {
   return (
     <div className="animate-pulse max-w-7xl mx-auto p-8 text-gray-300">
@@ -71,7 +70,6 @@ export default function SimilarMoviesPage() {
     if (id) fetchSimilar();
   }, [id, page]);
 
-  // 🦴 Skeleton loading state
   if (loading)
     return (
       <div className="bg-white text-gray-800 min-h-screen">
@@ -85,7 +83,6 @@ export default function SimilarMoviesPage() {
     <div className="bg-white text-gray-800 min-h-screen">
       <Header />
       <div className="max-w-7xl mx-auto p-8">
-        {/* Title + Back */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">More like this</h2>
           <button
@@ -96,7 +93,6 @@ export default function SimilarMoviesPage() {
           </button>
         </div>
 
-        {/* Movies grid */}
         {movies.length === 0 ? (
           <p className="text-center text-gray-500 mt-10">
             No similar movies found
@@ -125,7 +121,6 @@ export default function SimilarMoviesPage() {
           </div>
         )}
 
-        {/* Pagination */}
         <div className="flex justify-center items-center mt-10 gap-4">
           <button
             disabled={page === 1}
