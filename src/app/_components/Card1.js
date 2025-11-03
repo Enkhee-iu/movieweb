@@ -1,61 +1,84 @@
 "use client";
-import * as React from "react";
+import React, { useState } from "react";
 import VideoModal from "./Videomodal";
-export const Card1 = ({ title, rating }) => {
-  const [open, setOpen] = React.useState(false);
-  const trailerUrl = "https://www.youtube.com/embed/PvvUbP7fW44";
+
+const BASE_URL = "https://api.themoviedb.org/3";
+const ACCESS_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
+
+export default function Card1({ movie }) {
+  const [open, setOpen] = useState(false);
+  const [trailerKey, setTrailerKey] = useState(null);
+  const [loadingTrailer, setLoadingTrailer] = useState(false);
+
+  const handleWatchTrailer = async () => {
+    try {
+      setLoadingTrailer(true);
+      const res = await fetch(`${BASE_URL}/movie/${movie.id}/videos`, {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          accept: "application/json",
+        },
+      });
+      const data = await res.json();
+
+      const trailer = data.results?.find(
+        (v) => v.type === "Trailer" && v.site === "YouTube"
+      );
+
+      if (trailer) {
+        setTrailerKey(trailer.key);
+        setOpen(true);
+      } else {
+        alert("🎞 This movie has no trailer available.");
+      }
+    } catch (err) {
+      console.error("Trailer fetch error:", err);
+    } finally {
+      setLoadingTrailer(false);
+    }
+  };
+
   return (
-    <div className="relative">
+    <>
       <div
-        style={{ backgroundImage: "url(/HeroCard.jpg)" }}
-        className="relative bg-cover bg-center w-full h-[600px]"
+        className="relative w-full h-[600px] rounded-2xl overflow-hidden"
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
-        <div className="absolute left-[159px] top-[178px] w-[404px] h-[264px] gap-4 font-inter text-white">
-          <div>
-            <h3 className="text-base font-normal">Now Playing:</h3>
-            <h1 className="font-bold text-4xl">Wicked</h1>
-            <p className="text-sm mt-1 flex items-center gap-1">
-              <span className="text-yellow-400">⭐</span>
-              {typeof rating === "number" ? rating.toFixed(1) : "N/A"}/10
-            </p>
-          </div>
-          <div>
-            <p className="mt-4">
-              Elphaba, a misunderstood young woman because of her green skin,
-              and Glinda, a popular girl, become friends at Shiz University in
-              the Land of Oz. After an encounter with the Wonderful Wizard of
-              Oz, their friendship reaches a crossroads.
-            </p>
-            <button
-              onClick={() => setOpen(true)}
-              className="flex justify-center cursor-pointer items-center gap-2 w-[145px] mt-4 h-10 text-black bg-[#f4f4f5] 
-               rounded-md"
-            >
-              <svg
-                width={11}
-                height={13}
-                viewBox="0 0 11 13"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0.5 0.5L9.83333 6.5L0.5 12.5V0.5Z"
-                  stroke="#18181B"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Watch Trailer
-            </button>
-          </div>
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>
+
+        <div className="absolute bottom-16 left-16 max-w-xl text-white space-y-4">
+          <h1 className="text-4xl font-bold drop-shadow-lg">{movie.title}</h1>
+          <p className="text-yellow-400 text-lg">
+            ⭐ {movie.vote_average?.toFixed(1)} / 10
+          </p>
+          <p className="text-sm text-gray-200 line-clamp-3">
+            {movie.overview || "No description available."}
+          </p>
+
+          <button
+            onClick={handleWatchTrailer}
+            disabled={loadingTrailer}
+            className="mt-4 px-5 py-2 bg-white text-black rounded-md hover:bg-gray-300 transition cursor-pointer"
+          >
+            {loadingTrailer ? "Loading..." : "▶ Watch Trailer"}
+          </button>
         </div>
       </div>
 
       <VideoModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        trailerUrl="https://www.youtube.com/embed/fVImkUelYbI"
+        trailerUrl={
+          trailerKey
+            ? `https://www.youtube.com/embed/${trailerKey}?autoplay=1`
+            : ""
+        }
       />
-    </div>
+    </>
   );
-};
+}

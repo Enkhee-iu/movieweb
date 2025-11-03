@@ -75,9 +75,10 @@ export default function MovieDetail() {
           }
         );
         const videoData = await videoRes.json();
-        const trailer = videoData.results.find(
+        const trailer = videoData?.results?.find(
           (v) => v.type === "Trailer" && v.site === "YouTube"
         );
+
         setTrailerKey(trailer ? trailer.key : null);
 
         const similarRes = await fetch(
@@ -204,7 +205,7 @@ export default function MovieDetail() {
           <h3 className="text-2xl font-bold text-gray-800">More like this</h3>
           <button
             onClick={() => router.push(`/movie/${id}/similar`)}
-            className="text-gray-500 text-sm hover:text-gray-800 flex items-center gap-1"
+            className="text-gray-500 text-sm hover:text-gray-800 flex items-center gap-1 cursor-pointer"
           >
             See more →
           </button>

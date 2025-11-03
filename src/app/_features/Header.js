@@ -10,7 +10,8 @@ export const Header = () => {
     <div className="w-full min-h-9 p-4 flex justify-between mb-6 pl-20 pr-20">
       <Link
         href="/"
-        className="flex gap-2 items-center cursor-pointer hover:opacity-80 transition"
+        className="flex gap-2 items-center cursor-pointer
+      hover:opacity-80 transition"
       >
         <div className="w-[18px] h-[19px]">
           <Filmicon />
@@ -19,7 +20,6 @@ export const Header = () => {
           <Filmtitle />
         </div>
       </Link>
-
       <div className="flex w-[488px] min-h-9 gap-4">
         <div className="w-[97px] border flex gap-8 rounded-md border-[#e4e4e7] py-1 pr-4 pl-4">
           <Genre />
@@ -34,7 +34,6 @@ export const Header = () => {
           />
         </div>
       </div>
-
       <div className="border w-9 min-h-9 flex items-center rounded-md justify-center">
         <Moonicon />
       </div>

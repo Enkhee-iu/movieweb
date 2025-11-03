@@ -15,7 +15,6 @@ function SimilarMoviesSkeleton() {
         <div className="h-8 w-48 bg-gray-200 rounded"></div>
         <div className="h-5 w-16 bg-gray-200 rounded"></div>
       </div>
-
       <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
         {Array.from({ length: 20 }).map((_, i) => (
           <div key={i}>
@@ -24,12 +23,6 @@ function SimilarMoviesSkeleton() {
             <div className="h-3 w-16 bg-gray-200 rounded"></div>
           </div>
         ))}
-      </div>
-
-      <div className="flex justify-center items-center mt-10 gap-4">
-        <div className="h-8 w-20 bg-gray-200 rounded"></div>
-        <div className="h-4 w-32 bg-gray-200 rounded"></div>
-        <div className="h-8 w-20 bg-gray-200 rounded"></div>
       </div>
     </div>
   );
@@ -60,15 +53,50 @@ export default function SimilarMoviesPage() {
         const data = await res.json();
         setMovies(data.results || []);
         setTotalPages(data.total_pages || 1);
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching similar movies:", err);
+      } finally {
         setLoading(false);
       }
     };
 
     if (id) fetchSimilar();
   }, [id, page]);
+
+  const handlePrev = () => setPage((prev) => Math.max(1, prev - 1));
+  const handleNext = () => setPage((prev) => Math.min(totalPages, prev + 1));
+  const goToPage = (p) => setPage(p);
+
+  const getPageItems = () => {
+    const pages = [];
+    const maxButtons = 7;
+    if (totalPages <= maxButtons) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+      return pages;
+    }
+
+    const left = Math.max(2, page - 2);
+    const right = Math.min(totalPages - 1, page + 2);
+
+    pages.push(1);
+
+    if (left > 2) {
+      pages.push("left-ellipsis");
+    }
+
+    for (let i = left; i <= right; i++) {
+      pages.push(i);
+    }
+
+    if (right < totalPages - 1) {
+      pages.push("right-ellipsis");
+    }
+
+    pages.push(totalPages);
+    return pages;
+  };
+
+  const pageItems = getPageItems();
 
   if (loading)
     return (
@@ -87,7 +115,7 @@ export default function SimilarMoviesPage() {
           <h2 className="text-3xl font-bold">More like this</h2>
           <button
             onClick={() => router.back()}
-            className="text-gray-500 text-sm hover:text-gray-800"
+            className="text-gray-500 text-sm hover:text-gray-800 cursor-pointer"
           >
             ← Back
           </button>
@@ -121,33 +149,52 @@ export default function SimilarMoviesPage() {
           </div>
         )}
 
-        <div className="flex justify-center items-center mt-10 gap-4">
+        <div className="flex justify-center items-center mt-10 gap-2 text-gray-700">
           <button
+            onClick={handlePrev}
             disabled={page === 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            className={`px-4 py-2 rounded-md ${
+            className={`px-3 py-1 text-sm rounded-md cursor-pointer ${
               page === 1
-                ? "bg-gray-200 text-gray-400"
-                : "bg-gray-800 text-white"
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-700 hover:text-black"
             }`}
           >
-            Prev
+            ‹ Previous
           </button>
 
-          <p className="text-gray-700">
-            Page {page} of {totalPages}
-          </p>
+          {pageItems.map((item, idx) =>
+            item === "left-ellipsis" || item === "right-ellipsis" ? (
+              <span
+                key={`${item}-${idx}`}
+                className="px-2 text-sm text-gray-500"
+              >
+                ...
+              </span>
+            ) : (
+              <button
+                key={item}
+                onClick={() => goToPage(item)}
+                className={`px-3 py-1 text-sm rounded-md font-medium cursor-pointer ${
+                  page === item
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {item}
+              </button>
+            )
+          )}
 
           <button
+            onClick={handleNext}
             disabled={page === totalPages}
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            className={`px-4 py-2 rounded-md ${
+            className={`px-3 py-1 text-sm rounded-md cursor-pointer ${
               page === totalPages
-                ? "bg-gray-200 text-gray-400"
-                : "bg-gray-800 text-white"
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-700 hover:text-black"
             }`}
           >
-            Next
+            Next ›
           </button>
         </div>
       </div>
