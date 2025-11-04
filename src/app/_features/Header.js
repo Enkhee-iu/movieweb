@@ -58,7 +58,7 @@ export const Header = () => {
 
       <button
         onClick={toggleTheme}
-        className="border w-9 h-9 flex items-center justify-center rounded-md hover:bg-gray-100 cursor-pointer dark:border-gray-700 transition"
+        className="border w-9 h-9 flex items-center justify-center rounded-md hover:bg-gray-200 cursor-pointer dark:border-gray-700 transition"
         aria-label="Toggle dark mode"
       >
         {isDark ? (

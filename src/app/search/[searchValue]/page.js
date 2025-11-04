@@ -96,7 +96,6 @@ export default function SearchResultsPage() {
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-10">
           <button
