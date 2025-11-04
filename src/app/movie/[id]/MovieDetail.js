@@ -165,37 +165,43 @@ export default function MovieDetail() {
             <div className="flex gap-2">
               <p className="font-semibold w-[100px]">Director</p>
               <p>
-                {credits.crew
-                  .filter((m) => m.job === "Director")
-                  .map((d) => d.name)
-                  .join(", ") || "N/A"}
+                {credits?.crew?.length > 0
+                  ? credits.crew
+                      .filter((m) => m.job === "Director")
+                      .map((d) => d.name)
+                      .join(", ") || "N/A"
+                  : "N/A"}
               </p>
             </div>
 
             <div className="flex gap-2">
               <p className="font-semibold w-[100px]">Writers</p>
               <p>
-                {credits.crew
-                  .filter(
-                    (m) =>
-                      m.job === "Writer" ||
-                      m.job === "Screenplay" ||
-                      m.job === "Story" ||
-                      m.department === "Writing"
-                  )
-                  .slice(0, 3)
-                  .map((w) => w.name)
-                  .join(", ") || "N/A"}
+                {credits?.crew?.length > 0
+                  ? credits.crew
+                      .filter(
+                        (m) =>
+                          m.job === "Writer" ||
+                          m.job === "Screenplay" ||
+                          m.job === "Story" ||
+                          m.department === "Writing"
+                      )
+                      .slice(0, 3)
+                      .map((w) => w.name)
+                      .join(", ") || "N/A"
+                  : "N/A"}
               </p>
             </div>
 
             <div className="flex gap-2">
               <p className="font-semibold w-[100px]">Stars</p>
               <p>
-                {credits.cast
-                  .slice(0, 3)
-                  .map((actor) => actor.name)
-                  .join(" • ") || "N/A"}
+                {credits?.cast?.length > 0
+                  ? credits.cast
+                      .slice(0, 3)
+                      .map((actor) => actor.name)
+                      .join(" • ")
+                  : "N/A"}
               </p>
             </div>
           </div>

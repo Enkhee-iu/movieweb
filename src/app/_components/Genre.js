@@ -2,42 +2,39 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search } from "lucide-react";
+
+const BASE_URL = "https://api.themoviedb.org/3";
+const ACCESS_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
 export const Genre = () => {
   const [open, setOpen] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
 
-  const genres = [
-    "Action",
-    "Adventure",
-    "Animation",
-    "Biography",
-    "Comedy",
-    "Crime",
-    "Documentary",
-    "Drama",
-    "Family",
-    "Fantasy",
-    "Film-Noir",
-    "Game-Show",
-    "History",
-    "Horror",
-    "Music",
-    "Musical",
-    "Mystery",
-    "News",
-    "Reality-TV",
-    "Romance",
-    "Sci-Fi",
-    "Short",
-    "Sport",
-    "Talk-Show",
-    "Thriller",
-    "War",
-    "Western",
-  ];
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/genre/movie/list?language=en`, {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            accept: "application/json",
+          },
+        });
+        const data = await res.json();
+        setGenres(data.genres || []);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchGenres();
+  }, []);
+
+  // ⬇️ Dropdown-г гадна дарахад хаах
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -56,7 +53,7 @@ export const Genre = () => {
       >
         <ChevronDown
           size={16}
-          className={`transition-transform duration-300  ${
+          className={`transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -70,41 +67,34 @@ export const Genre = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0  mt-2 w-[520px] bg-white border border-gray-200 rounded-xl shadow-lg p-5 z-50"
+            className="absolute left-0 mt-2 w-[520px] bg-white border border-gray-200 rounded-xl shadow-lg p-5 z-50"
           >
             <h3 className="text-lg font-semibold mb-1">Genres</h3>
             <p className="text-sm text-gray-500 mb-4">
               See lists of movies by genre
             </p>
-            <div className="flex flex-wrap gap-2">
-              {genres.map((genre) => (
-                <button
-                  key={genre}
-                  className="text-sm flex items-center gap-1 cursor-pointer px-3 py-1.5 border border-gray-300 rounded-full hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700 transition"
-                >
-                  {genre}
-                  <span className="text-gray-400">›</span>
-                </button>
-              ))}
-            </div>
+
+            {loading ? (
+              <p className="text-sm text-gray-400 italic">Loading genres...</p>
+            ) : genres.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {genres.map((genre) => (
+                  <button
+                    key={genre.id}
+                    className="text-sm flex items-center gap-1 cursor-pointer px-3 py-1.5 border border-gray-300 rounded-full hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700 transition"
+                    onClick={() => console.log("Selected genre:", genre.name)}
+                  >
+                    {genre.name}
+                    <span className="text-gray-400">›</span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 italic">No genres found.</p>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 };
-
-<div className="w-[488px] h-9 flex flex-row justify-between items-center gap-3">
-  <div className="w-[97px] h-9 flex justify-center items-center rounded-xl border-2 border-gray-100 bg-gray-100">
-    <Genre />
-  </div>
-
-  <div className="w-[379px] h-9 flex items-center rounded-8 border-2 border-gray-200 bg-gray-100 px-3 gap-2">
-    <Search size={16} className="text-gray-400" />
-    <input
-      type="text"
-      placeholder="Search"
-      className="w-full h-full bg-transparent text-gray-500 text-sm placeholder-gray-400 focus:outline-none"
-    />
-  </div>
-</div>;

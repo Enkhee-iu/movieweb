@@ -1,17 +1,44 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Filmicon from "../_icons/Filmicon";
 import Filmtitle from "../_icons/Filmtitle";
 import Moonicon from "../_icons/Moonicon";
-import Searchicon from "../_icons/Searchicon";
 import { Genre } from "../_components/Genre";
+import Search from "../_components/Search";
 import Link from "next/link";
 
 export const Header = () => {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark") {
+      document.documentElement.classList.add("dark");
+      setIsDark(true);
+    } else {
+      document.documentElement.classList.remove("dark");
+      setIsDark(false);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (isDark) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      setIsDark(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setIsDark(true);
+    }
+  };
+
   return (
-    <div className="w-full min-h-9 p-4 flex justify-between mb-6 pl-20 pr-20">
+    <header className="w-full min-h-9 p-4 flex justify-between items-center mb-6 pl-20 pr-20  transition-colors duration-300  ">
       <Link
         href="/"
-        className="flex gap-2 items-center cursor-pointer
-      hover:opacity-80 transition"
+        className="flex gap-2 items-center cursor-pointer hover:opacity-80 transition"
       >
         <div className="w-[18px] h-[19px]">
           <Filmicon />
@@ -20,23 +47,26 @@ export const Header = () => {
           <Filmtitle />
         </div>
       </Link>
+
       <div className="flex w-[488px] min-h-9 gap-4">
-        <div className="w-[97px] border flex gap-8 rounded-md border-[#e4e4e7] py-1 pr-4 pl-4">
+        <div className="w-[97px] border flex items-center justify-center rounded-md border-[#e4e4e7] py-1 pr-4 pl-4 dark:border-gray-300">
           <Genre />
         </div>
 
-        <div className="flex items-center border rounded-md border-[#e4e4e7] w-[379px] min-h-9 gap-2 px-2">
-          <Searchicon />
-          <input
-            type="text"
-            placeholder="Search"
-            className="flex-1 outline-none"
-          />
-        </div>
+        <Search />
       </div>
-      <div className="border w-9 min-h-9 flex items-center rounded-md justify-center">
-        <Moonicon />
-      </div>
-    </div>
+
+      <button
+        onClick={toggleTheme}
+        className="border w-9 h-9 flex items-center justify-center rounded-md hover:bg-gray-100 cursor-pointer dark:border-gray-700 transition"
+        aria-label="Toggle dark mode"
+      >
+        {isDark ? (
+          <span className="text-yellow-400 text-lg">☀</span>
+        ) : (
+          <Moonicon />
+        )}
+      </button>
+    </header>
   );
 };
