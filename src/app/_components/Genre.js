@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation"; // ✅ navigate хийхэд ашиглана
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
@@ -12,6 +13,7 @@ export const Genre = () => {
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
+  const router = useRouter(); // ✅ navigation
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -44,6 +46,12 @@ export const Genre = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // ✅ Genre click → /genre/[id] рүү navigate
+  const handleGenreClick = (genre) => {
+    router.push(`/genre/${genre.id}`); // params ашиглан navigate
+    setOpen(false); // dropdown хаах
+  };
 
   return (
     <div ref={dropdownRef} className="relative inline-block text-left">
@@ -81,8 +89,8 @@ export const Genre = () => {
                 {genres.map((genre) => (
                   <button
                     key={genre.id}
+                    onClick={() => handleGenreClick(genre)} // ✅ navigate
                     className="text-sm flex items-center gap-1 cursor-pointer px-3 py-1.5 border border-gray-300 rounded-full hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700 transition"
-                    onClick={() => console.log("Selected genre:", genre.name)}
                   >
                     {genre.name}
                     <span className="text-gray-400">›</span>

@@ -23,9 +23,7 @@ export default function Search() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_URL}/search/movie?query=${encodeURIComponent(
-            searchValue
-          )}&language=en-US&page=1`,
+          `${BASE_URL}/search/movie?query=${encodeURIComponent(searchValue)}&language=en-US&page=1`,
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -47,7 +45,7 @@ export default function Search() {
 
   return (
     <div className="relative w-[380px]">
-      <div className="flex items-center border rounded-md border-gray-300 w-full min-h-9 gap-2 px-2 bg-white ">
+      <div className="flex items-center border rounded-md border-gray-300 w-full min-h-9 gap-2 px-2 bg-white">
         <SearchIcon size={18} className="text-gray-400" />
         <input
           type="text"
@@ -98,11 +96,10 @@ export default function Search() {
                 </div>
               ))}
 
+             
               <div
                 onClick={() =>
-                  router.push(
-                    `/search?query=${encodeURIComponent(searchValue)}`
-                  )
+                  router.push(`/search/${encodeURIComponent(searchValue)}`)
                 }
                 className="p-3 text-center text-sm text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-900 cursor-pointer rounded-b-xl"
               >
@@ -117,3 +114,4 @@ export default function Search() {
     </div>
   );
 }
+

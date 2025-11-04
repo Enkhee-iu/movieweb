@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useRouter, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { Header } from "@/app/_features/Header";
+import { Footer } from "@/app/_features/Footer";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
@@ -10,21 +12,19 @@ export default function SearchResultsPage() {
   const { searchValue } = useParams();
   const router = useRouter();
 
-  console.log(searchValue);
-
   const [results, setResults] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!searchValue) return;
+
     const fetchSearchResults = async () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_URL}/search/movie?query=${
-            searchValue || ""
-          }&language=en-US&page=${page}`,
+          `${BASE_URL}/search/movie?query=${encodeURIComponent(searchValue)}&language=en-US&page=${page}`,
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -43,19 +43,18 @@ export default function SearchResultsPage() {
     };
 
     fetchSearchResults();
-  }, [page]);
+  }, [searchValue, page]);
 
   if (loading)
-    return (
-      <p className="text-center mt-20 text-gray-500 text-lg">
-        Loading movies...
-      </p>
-    );
+    return <p className="text-center mt-20 text-gray-500">Loading movies...</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-8">
+    <div>
+      <Header/>
+    <div className="max-w-5xl mx-auto ">
+   
       <h2 className="text-3xl font-bold mb-6">
-        Search results for “{searchValue}”
+        Search results for “{decodeURIComponent(searchValue)}”
       </h2>
 
       {results.length === 0 ? (
@@ -117,6 +116,9 @@ export default function SearchResultsPage() {
           </button>
         </div>
       )}
+      
+    </div>
+    <Footer/>
     </div>
   );
 }
