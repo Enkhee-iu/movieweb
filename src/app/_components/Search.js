@@ -23,7 +23,9 @@ export default function Search() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_URL}/search/movie?query=${encodeURIComponent(searchValue)}&language=en-US&page=1`,
+          `${BASE_URL}/search/movie?query=${encodeURIComponent(
+            searchValue
+          )}&language=en-US&page=1`,
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -96,7 +98,6 @@ export default function Search() {
                 </div>
               ))}
 
-             
               <div
                 onClick={() =>
                   router.push(`/search/${encodeURIComponent(searchValue)}`)
@@ -107,11 +108,10 @@ export default function Search() {
               </div>
             </div>
           ) : (
-            <p className="p-4 text-sm text-gray-400">No movies found.</p>
+            <p className="pl-10 text-sm text-gray-400">No movies found.</p>
           )}
         </div>
       )}
     </div>
   );
 }
-

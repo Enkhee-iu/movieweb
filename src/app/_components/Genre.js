@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation"; // ✅ navigate хийхэд ашиглана
+import { useRouter } from "next/navigation";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
@@ -13,7 +13,7 @@ export const Genre = () => {
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
-  const router = useRouter(); // ✅ navigation
+  const router = useRouter();
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -36,7 +36,6 @@ export const Genre = () => {
     fetchGenres();
   }, []);
 
-  // ⬇️ Dropdown-г гадна дарахад хаах
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -47,17 +46,16 @@ export const Genre = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ✅ Genre click → /genre/[id] рүү navigate
   const handleGenreClick = (genre) => {
-    router.push(`/genre/${genre.id}`); // params ашиглан navigate
-    setOpen(false); // dropdown хаах
+    router.push(`/genre/${genre.id}`);
+    setOpen(false);
   };
 
   return (
     <div ref={dropdownRef} className="relative inline-block text-left">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition cursor-pointer"
+        className="flex items-center gap-2 text-gray-700transition cursor-pointer"
       >
         <ChevronDown
           size={16}
@@ -89,8 +87,8 @@ export const Genre = () => {
                 {genres.map((genre) => (
                   <button
                     key={genre.id}
-                    onClick={() => handleGenreClick(genre)} // ✅ navigate
-                    className="text-sm flex items-center gap-1 cursor-pointer px-3 py-1.5 border border-gray-300 rounded-full hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700 transition"
+                    onClick={() => handleGenreClick(genre)}
+                    className="text-sm flex items-center gap-1 px-3 py-1.5 border border-gray-300 rounded-full hover:bg-indigo-50 hover:border-indigo-100 cursor-pointer transition"
                   >
                     {genre.name}
                     <span className="text-gray-400">›</span>

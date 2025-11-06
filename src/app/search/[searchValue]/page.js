@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Header } from "@/app/_features/Header";
 import { Footer } from "@/app/_features/Footer";
+import { MovieCard } from "@/app/_components/MovieListCard";
+import { GenreList, Genreresults } from "@/app/_components/GenreList";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
@@ -24,7 +26,9 @@ export default function SearchResultsPage() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_URL}/search/movie?query=${encodeURIComponent(searchValue)}&language=en-US&page=${page}`,
+          `${BASE_URL}/search/movie?query=${encodeURIComponent(
+            searchValue
+          )}&language=en-US&page=${page}`,
           {
             headers: {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -35,8 +39,8 @@ export default function SearchResultsPage() {
         const data = await res.json();
         setResults(data.results || []);
         setTotalPages(data.total_pages || 1);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -48,77 +52,153 @@ export default function SearchResultsPage() {
   if (loading)
     return <p className="text-center mt-20 text-gray-500">Loading movies...</p>;
 
+  const goToPage = (num) => {
+    const n = Math.max(1, Math.min(num, totalPages));
+    setPage(n);
+  };
+
+  const handlePrev = () => goToPage(page - 1);
+  const handleNext = () => goToPage(page + 1);
+
+  const getPageItems = () => {
+    const pages = [];
+    const maxButtons = 7;
+    if (totalPages <= maxButtons) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+      return pages;
+    }
+
+    const left = Math.max(2, page - 2);
+    const right = Math.min(totalPages - 1, page + 2);
+
+    pages.push(1);
+
+    if (left > 2) {
+      pages.push("left-ellipsis");
+    }
+
+    for (let i = left; i <= right; i++) {
+      pages.push(i);
+    }
+
+    if (right < totalPages - 1) {
+      pages.push("right-ellipsis");
+    }
+
+    pages.push(totalPages);
+    return pages;
+  };
+
+  const pageItems = getPageItems();
+
+  const SkeletonCard = () => (
+    <div className="w-[280px] bg-white rounded-2xl shadow-md overflow-hidden">
+      <div className="bg-gray-300 h-[340px] w-full animate-pulse"></div>
+      <div className="p-3 bg-[#F4F4F5] h-[100px]">
+        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2 animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div>
-      <Header/>
-    <div className="max-w-5xl mx-auto ">
-   
-      <h2 className="text-3xl font-bold mb-6">
-        Search results for “{decodeURIComponent(searchValue)}”
-      </h2>
+      <Header />
+      <div className="flex justify-center mb-80">
+        <div className="w-8xl gap-5  h-full flex">
+          <div className="border-r pr-10">
+            <h2 className=" inter mb-6 font-semibold text-3xl">
+              Search results for “{decodeURIComponent(searchValue)}”
+            </h2>
 
-      {results.length === 0 ? (
-        <p className="text-gray-500">No results found.</p>
-      ) : (
-        <div className="space-y-4">
-          {results.map((movie) => (
-            <div
-              key={movie.id}
-              className="flex justify-between items-center border-b border-gray-200 pb-3 hover:bg-gray-50 dark:hover:bg-gray-900 p-3 rounded-lg transition cursor-pointer"
-              onClick={() => router.push(`/movie/${movie.id}`)}
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w92${movie.poster_path}`
-                      : "/no-image.jpg"
-                  }
-                  alt={movie.title}
-                  className="w-[60px] h-[90px] rounded-md object-cover"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold">{movie.title}</h3>
-                  <p className="text-yellow-500 text-sm">
-                    ⭐ {movie.vote_average?.toFixed(1)}/10
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    {movie.release_date?.slice(0, 4) || "Unknown"}
-                  </p>
-                </div>
+            {results.length === 0 ? (
+              <p className="text-gray-500 ">No results found.</p>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                {loading
+                  ? Array.from({ length: 20 }).map((_, i) => (
+                      <SkeletonCard key={i} />
+                    ))
+                  : results
+                      .slice(0, 5)
+                      .map((movie) => (
+                        <MovieCard
+                          key={movie.id}
+                          id={movie.id}
+                          title={movie.title}
+                          rating={movie.vote_average?.toFixed(1)}
+                          image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                        />
+                      ))}
               </div>
-              <p className="text-sm text-gray-600 hover:text-indigo-600 transition">
-                See more →
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+            )}
 
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 mt-10">
-          <button
-            onClick={() => setPage((p) => Math.max(p - 1, 1))}
-            disabled={page === 1}
-            className="px-4 py-2 border rounded-md disabled:opacity-40 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            ← Prev
-          </button>
-          <span className="text-gray-600 dark:text-gray-300">
-            Page {page} of {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-            disabled={page === totalPages}
-            className="px-4 py-2 border rounded-md disabled:opacity-40 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            Next →
-          </button>
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center mt-10 gap-2 text-gray-700">
+                <button
+                  onClick={handlePrev}
+                  disabled={page === 1}
+                  className={`px-3 py-1 text-sm rounded-md cursor-pointer ${
+                    page === 1
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-gray-700 hover:text-black"
+                  }`}
+                >
+                  ‹ Previous
+                </button>
+
+                {pageItems.map((item, idx) => {
+                  if (item === "left-ellipsis" || item === "right-ellipsis") {
+                    return (
+                      <span
+                        key={`${item}-${idx}`}
+                        className="px-2 text-sm text-gray-500"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
+                  return (
+                    <button
+                      key={item}
+                      onClick={() => goToPage(item)}
+                      className={`px-3 py-1 text-sm rounded-md font-medium cursor-pointer ${
+                        page === item
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
+
+                <button
+                  onClick={handleNext}
+                  disabled={page === totalPages}
+                  className={`px-3 py-1 text-sm rounded-md cursor-pointer ${
+                    page === totalPages
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-gray-700 hover:text-black"
+                  }`}
+                >
+                  Next ›
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="w-[387px] rounded-md  ">
+            <h3 className="inter font-semibold text-2xl ml-[26px]">
+              Search by genre
+            </h3>
+            <p className="text-base font-normal ml-[26px]">
+              See lists of movies by genre
+            </p>
+            <GenreList />
+          </div>
         </div>
-      )}
-      
-    </div>
-    <Footer/>
+      </div>
+      <Footer />
     </div>
   );
 }
