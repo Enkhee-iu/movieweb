@@ -58,9 +58,7 @@ export function UpcomingMovieList() {
     <div className="w-<fraction> h-<fraction> flex justify-center">
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
-            🎬 Upcoming Movies
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800">Upcoming Movies</h2>
           <button
             onClick={handleSeeMore}
             className="text-sm text-gray-600 flex items-center gap-2 cursor-pointer hover:text-black transition"

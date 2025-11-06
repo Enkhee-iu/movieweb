@@ -8,7 +8,7 @@ const ACCESS_TOKEN =
 
 function MovieSkeleton() {
   return (
-    <div className="animate-pulse max-w-7xl mx-auto p-8 text-gray-300">
+    <div className="animate-pulse max-w-6xl mx-auto p-8 text-gray-300">
       <div className="flex justify-between items-center mb-6">
         <div>
           <div className="h-8 w-48 bg-gray-200 rounded mb-2"></div>
@@ -120,9 +120,40 @@ export default function MovieDetail() {
   if (!movie)
     return <p className="text-center text-red-500 mt-10">Movie not found</p>;
 
+  function TrailerHero({ trailerKey, poster }) {
+    const [play, setPlay] = React.useState(false);
+
+    return (
+      <div className="relative w-[800px] h-[428px] rounded-xl overflow-hidden group">
+        {play ? (
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&controls=1`}
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          />
+        ) : (
+          <>
+            <img src={poster} className="w-full h-full object-cover" />
+
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition"></div>
+
+            <button
+              onClick={() => setPlay(true)}
+              className="absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 hover:bg-white 
+                       text-black px-4 py-2 rounded-full transition shadow-lg"
+            >
+              ▶ <span className="font-medium">Play trailer</span>
+            </button>
+          </>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white text-gray-800 min-h-screen">
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="max-w-6xl mx-auto p-8">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-4xl font-bold">{movie.title}</h2>
@@ -144,7 +175,8 @@ export default function MovieDetail() {
             alt={movie.title}
             className="rounded-xl shadow-lg w-[290px] h-[428px]"
           />
-          <div className="w-[760px] h-[428px] bg-gray-200 rounded-xl flex">
+
+          {/* <div className="w-[800px] h-[428px] bg-gray-200 rounded-xl flex">
             {trailerKey ? (
               <iframe
                 src={`https://www.youtube.com/embed/${trailerKey}`}
@@ -155,7 +187,12 @@ export default function MovieDetail() {
             ) : (
               <p className="text-gray-500 m-auto">No trailer available</p>
             )}
-          </div>
+          </div> */}
+
+          <TrailerHero
+            trailerKey={trailerKey}
+            poster={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+          />
         </div>
 
         <p className="text-gray-700 mb-8">{movie.overview}</p>

@@ -58,7 +58,7 @@ export function PopularMovieList() {
     <div className="w-<fraction> h-<fraction> flex justify-center">
       <div className="p-6">
         <div className="flex justify-between">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">🔥 Popular</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Popular</h2>
           <button
             onClick={handleSeeMore}
             className="text-sm text-gray-600 flex items-center gap-2 cursor-pointer hover:text-black transition"
