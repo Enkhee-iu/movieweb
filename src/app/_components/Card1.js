@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import VideoModal from "./Videomodal";
+import Star from "../_icons/star";
+import BigStar from "../_icons/BigStar";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
@@ -53,8 +55,8 @@ export default function Card1({ movie }) {
 
         <div className="absolute bottom-16 left-16 max-w-xl text-white space-y-4">
           <h1 className="text-4xl font-bold drop-shadow-lg">{movie.title}</h1>
-          <p className="text-yellow-400 text-lg">
-            ⭐ {movie.vote_average?.toFixed(1)} / 10
+          <p className="text-yellow-400 text-lg flex items-center gap-1">
+            <BigStar /> {movie.vote_average?.toFixed(1)} / 10
           </p>
           <p className="text-sm text-gray-200 line-clamp-3">
             {movie.overview || "No description available."}

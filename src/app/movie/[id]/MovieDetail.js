@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Star from "@/app/_icons/star";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
@@ -140,8 +141,8 @@ export default function MovieDetail() {
 
             <button
               onClick={() => setPlay(true)}
-              className="absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 hover:bg-white 
-                       text-black px-4 py-2 rounded-full transition shadow-lg"
+              className="absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 hover:bg-white
+                       text-black px-4 py-2 rounded-full transition shadow-lg cursor-pointer"
             >
               ▶ <span className="font-medium">Play trailer</span>
             </button>
@@ -162,7 +163,9 @@ export default function MovieDetail() {
             </p>
           </div>
           <div className="flex items-center gap-2 text-yellow-500">
-            <span>⭐</span>
+            <span>
+              <Star />
+            </span>
             <p className="text-lg font-semibold text-gray-800">
               {movie.vote_average?.toFixed(1)}/10
             </p>
@@ -175,19 +178,6 @@ export default function MovieDetail() {
             alt={movie.title}
             className="rounded-xl shadow-lg w-[290px] h-[428px]"
           />
-
-          {/* <div className="w-[800px] h-[428px] bg-gray-200 rounded-xl flex">
-            {trailerKey ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${trailerKey}`}
-                title="Trailer"
-                allowFullScreen
-                className="w-full h-full rounded-xl"
-              ></iframe>
-            ) : (
-              <p className="text-gray-500 m-auto">No trailer available</p>
-            )}
-          </div> */}
 
           <TrailerHero
             trailerKey={trailerKey}
@@ -269,8 +259,8 @@ export default function MovieDetail() {
               <p className="text-sm font-medium text-gray-800 truncate">
                 {m.title}
               </p>
-              <p className="text-yellow-500 text-sm">
-                ⭐ {m.vote_average?.toFixed(1)}
+              <p className="text-yellow-500 text-sm flex items-center gap-1">
+                <Star /> {m.vote_average?.toFixed(1)}
               </p>
             </div>
           ))}

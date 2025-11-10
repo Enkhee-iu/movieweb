@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Search as SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import Star from "../_icons/star";
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
@@ -47,27 +47,31 @@ export default function Search() {
 
   return (
     <div className="relative w-[380px]">
-      <div className="flex items-center border rounded-md border-gray-300 w-full min-h-9 gap-2 px-2 bg-white">
-        <SearchIcon size={18} className="text-gray-400" />
+      <div className="flex items-center border rounded-md border-gray-300 w-full min-h-8 gap-2 px-2 bg-white">
+        <SearchIcon
+          size={18}
+          className="text-gray-400 bg-[var(--bg)] text-[var(--text)]"
+        />
         <input
           type="text"
           placeholder="Search movies..."
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="flex-1 outline-none bg-transparent text-gray-800 dark:text-gray-200 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+          className="flex-1 outline-none   dark:text-gray-900 placeholder:text-gray-900 dark:placeholder:text-gray-900 
+          px-3 py-2 rounded-md  bg-[var(--bg)] text-[var(--text)]"
         />
       </div>
 
       {searchValue && (
-        <div className="absolute top-11 left-0 w-full bg-white dark:bg-[#121212] border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50 max-h-[500px] overflow-y-auto">
+        <div className="absolute top-11 left-0 w-full bg-white  border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50 max-h-[500px] overflow-y-auto">
           {loading ? (
-            <p className="p-4 text-sm text-gray-400">Searching...</p>
+            <p className="p-4 text-sm text-gray-800">Searching...</p>
           ) : results.length > 0 ? (
             <div>
               {results.slice(0, 5).map((movie) => (
                 <div
                   key={movie.id}
-                  className="flex items-center justify-between p-3 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 cursor-pointer transition"
+                  className="flex items-center justify-between p-3 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-200 cursor-pointer transition"
                   onClick={() => router.push(`/movie/${movie.id}`)}
                 >
                   <div className="flex items-center gap-4">
@@ -81,11 +85,11 @@ export default function Search() {
                       className="w-[60px] h-[90px] object-cover rounded-md"
                     />
                     <div>
-                      <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm">
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-900 text-sm">
                         {movie.title}
                       </h3>
-                      <p className="text-yellow-500 text-xs flex items-center gap-1">
-                        ⭐ {movie.vote_average?.toFixed(1)}/10
+                      <p className="text-yellow-500 text-xs flex items-center gap-1 flex items-center">
+                        <Star /> {movie.vote_average?.toFixed(1)}/10
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {movie.release_date?.slice(0, 4) || "Unknown"}
@@ -102,7 +106,7 @@ export default function Search() {
                 onClick={() =>
                   router.push(`/search/${encodeURIComponent(searchValue)}`)
                 }
-                className="p-3 text-center text-sm text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-900 cursor-pointer rounded-b-xl"
+                className="p-3 text-center text-sm text-black hover:bg-indigo-50 dark:hover:bg-gray-200 cursor-pointer rounded-b-xl"
               >
                 See all results for “{searchValue}”
               </div>

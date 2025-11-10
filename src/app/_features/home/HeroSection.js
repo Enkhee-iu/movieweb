@@ -10,6 +10,18 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+const SkeletonHeroCard = () => {
+  return (
+    <div className="relative w-full h-[600px] rounded-2xl overflow-hidden bg-gray-300 animate-pulse">
+      <div className="absolute inset-0 bg-linear-to-t from-gray-500/40 to-transparent"></div>
+      <div className="absolute bottom-8 left-8 right-8 space-y-3">
+        <div className="h-8 w-2/3 bg-gray-200 rounded"></div>
+        <div className="h-4 w-1/3 bg-gray-200 rounded"></div>
+      </div>
+    </div>
+  );
+};
+
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
@@ -40,16 +52,6 @@ export function HeroSection() {
     };
     fetchMovies();
   }, []);
-
-  const SkeletonHeroCard = () => (
-    <div className="relative w-full h-[600px] rounded-2xl overflow-hidden bg-gray-300 animate-pulse">
-      <div className="absolute inset-0 bg-linear-to-t from-gray-500/40 to-transparent"></div>
-      <div className="absolute bottom-8 left-8 right-8 space-y-3">
-        <div className="h-8 w-2/3 bg-gray-200 rounded"></div>
-        <div className="h-4 w-1/3 bg-gray-200 rounded"></div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="flex justify-center">

@@ -10,9 +10,9 @@ export default function MovieTypePage({ params }) {
   const { type } = params;
 
   const titleMap = {
-    popular: "🔥 Popular Movies",
-    top_rated: "⭐ Top Rated Movies",
-    upcoming: "🎬 Upcoming Movies",
+    popular: "Popular Movies",
+    top_rated: "Top Rated Movies",
+    upcoming: "Upcoming Movies",
   };
 
   const title = titleMap[type] || "Movies";

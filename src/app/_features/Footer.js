@@ -3,7 +3,7 @@ import Footertitle from "../_icons/Footertitle";
 
 export const Footer = () => {
   return (
-    <div className="bg-[#4338ca] w-<fraction> min-h-[280px] pt-20 pb-20 flex gap-[48px] pl-16 pr-16 justify-between">
+    <div className="bg-[#4338ca] w-<fraction> min-h-[280px] pt-20 pb-20 flex gap-12 pl-16 pr-16 justify-between">
       <div>
         <div className="w-[18px] h-[19px] flex gap-1 items-center">
           <div>
@@ -15,7 +15,7 @@ export const Footer = () => {
             <Footertitle />
           </div>
         </div>
-        <div className="mt-[8px]">
+        <div className="mt-2">
           <p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="flex justify-end">
-        <div className="w-[913px] min-h-[200px] flex gap-[96px] justify-end ">
+        <div className=" ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width={174}
@@ -72,7 +72,7 @@ export const Footer = () => {
             </defs>
           </svg>
         </div>
-        <div className="ml-[96px]">
+        <div className="ml-24">
           {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"

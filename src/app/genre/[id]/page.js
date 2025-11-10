@@ -111,7 +111,7 @@ export default function GenrePage() {
           <div>
             <div>
               <h1 className=" text-black font-semibold text-xl">
-                81 titles in &quot; Animation&quot;
+                81 titles in &quot;&quot;
               </h1>
             </div>
             <div className="flex-wrap justify-center gap-6 grid grid-cols-4 mt-[20px] ">

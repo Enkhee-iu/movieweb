@@ -2,6 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { MovieCard } from "@/app/_components/MovieListCard";
 
+const SkeletonCard = () => {
+  return (
+    <div className="w-[280px] bg-white rounded-2xl shadow-md overflow-hidden">
+      <div className="bg-gray-300 h-[340px] w-full animate-pulse"></div>
+      <div className="p-3 bg-[#F4F4F5] h-[100px]">
+        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2 animate-pulse"></div>
+        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+      </div>
+    </div>
+  );
+};
+
 const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
@@ -40,16 +52,6 @@ export function MovieListData({ title, type }) {
 
     fetchMovies();
   }, [type, page]);
-
-  const SkeletonCard = () => (
-    <div className="w-[280px] bg-white rounded-2xl shadow-md overflow-hidden">
-      <div className="bg-gray-300 h-[340px] w-full animate-pulse"></div>
-      <div className="p-3 bg-[#F4F4F5] h-[100px]">
-        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2 animate-pulse"></div>
-        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-      </div>
-    </div>
-  );
 
   const goToPage = (num) => {
     const n = Math.max(1, Math.min(num, totalPages));
